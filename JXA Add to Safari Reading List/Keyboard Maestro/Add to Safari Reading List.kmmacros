@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>Activate</key>
+		<string>Normal</string>
+		<key>CreationDate</key>
+		<real>574520587.64150298</real>
+		<key>Macros</key>
+		<array>
+			<dict>
+				<key>Actions</key>
+				<array>
+					<dict>
+						<key>ActionName</key>
+						<string>KM 原生动作实现</string>
+						<key>Actions</key>
+						<array>
+							<dict>
+								<key>Conditions</key>
+								<dict>
+									<key>ConditionList</key>
+									<array>
+										<dict>
+											<key>Application</key>
+											<dict>
+												<key>BundleIdentifier</key>
+												<string>com.google.Chrome</string>
+												<key>Name</key>
+												<string>Google Chrome</string>
+												<key>NewFile</key>
+												<string>/Applications/Google Chrome.app</string>
+											</dict>
+											<key>ApplicationConditionType</key>
+											<string>Active</string>
+											<key>ConditionType</key>
+											<string>Application</string>
+										</dict>
+										<dict>
+											<key>Application</key>
+											<dict>
+												<key>BundleIdentifier</key>
+												<string>com.apple.Safari</string>
+												<key>Name</key>
+												<string>Safari</string>
+												<key>NewFile</key>
+												<string>/Applications/Safari.app</string>
+											</dict>
+											<key>ApplicationConditionType</key>
+											<string>Active</string>
+											<key>ConditionType</key>
+											<string>Application</string>
+										</dict>
+									</array>
+									<key>ConditionListMatch</key>
+									<string>Any</string>
+								</dict>
+								<key>ElseActions</key>
+								<array/>
+								<key>MacroActionType</key>
+								<string>IfThenElse</string>
+								<key>ThenActions</key>
+								<array>
+									<dict>
+										<key>KeyCode</key>
+										<integer>37</integer>
+										<key>MacroActionType</key>
+										<string>SimulateKeystroke</string>
+										<key>Modifiers</key>
+										<integer>256</integer>
+										<key>ReleaseAll</key>
+										<false/>
+										<key>TargetApplication</key>
+										<dict/>
+										<key>TargetingType</key>
+										<string>Front</string>
+									</dict>
+									<dict>
+										<key>KeyCode</key>
+										<integer>8</integer>
+										<key>MacroActionType</key>
+										<string>SimulateKeystroke</string>
+										<key>Modifiers</key>
+										<integer>256</integer>
+										<key>ReleaseAll</key>
+										<false/>
+										<key>TargetApplication</key>
+										<dict/>
+										<key>TargetingType</key>
+										<string>Front</string>
+									</dict>
+								</array>
+								<key>TimeOutAbortsMacro</key>
+								<true/>
+							</dict>
+							<dict>
+								<key>DisplayKind</key>
+								<string>None</string>
+								<key>IncludeStdErr</key>
+								<true/>
+								<key>MacroActionType</key>
+								<string>PlugIn</string>
+								<key>PlugInFolderName</key>
+								<string>Clean Clipboard with TextSoap</string>
+								<key>PlugInParameters</key>
+								<dict>
+									<key>Cleaner</key>
+									<string>Extract URLs by Replacing</string>
+								</dict>
+								<key>TimeOutAbortsMacro</key>
+								<true/>
+								<key>TrimResultsNew</key>
+								<true/>
+							</dict>
+							<dict>
+								<key>MacroActionType</key>
+								<string>SetVariableToText</string>
+								<key>Text</key>
+								<string>%SystemClipboard%</string>
+								<key>Variable</key>
+								<string>URLtoReadingList</string>
+							</dict>
+							<dict>
+								<key>DisplayKind</key>
+								<string>Window</string>
+								<key>IncludeStdErr</key>
+								<false/>
+								<key>MacroActionType</key>
+								<string>ExecuteJavaScriptForAutomation</string>
+								<key>NotifyOnFailure</key>
+								<false/>
+								<key>Path</key>
+								<string></string>
+								<key>StopOnFailure</key>
+								<false/>
+								<key>Text</key>
+								<string>var app = Application('Safari');
+var kme = Application("Keyboard Maestro Engine");
+var myVar = kme.getvariable('URLtoReadingList');
+
+app.addReadingListItem(myVar);</string>
+								<key>TimeOutAbortsMacro</key>
+								<true/>
+								<key>TrimResults</key>
+								<true/>
+								<key>TrimResultsNew</key>
+								<true/>
+								<key>UseText</key>
+								<true/>
+							</dict>
+							<dict>
+								<key>MacroActionType</key>
+								<string>Notification</string>
+								<key>SoundName</key>
+								<string>DefaultSoundName</string>
+								<key>Subtitle</key>
+								<string>添加成功</string>
+								<key>Text</key>
+								<string></string>
+								<key>Title</key>
+								<string>%ExecutingMacro%</string>
+							</dict>
+						</array>
+						<key>IsActive</key>
+						<false/>
+						<key>IsDisclosed</key>
+						<false/>
+						<key>MacroActionType</key>
+						<string>Group</string>
+						<key>TimeOutAbortsMacro</key>
+						<true/>
+					</dict>
+					<dict>
+						<key>DisplayKind</key>
+						<string>Window</string>
+						<key>IncludeStdErr</key>
+						<false/>
+						<key>MacroActionType</key>
+						<string>ExecuteJavaScriptForAutomation</string>
+						<key>Path</key>
+						<string></string>
+						<key>Text</key>
+						<string>var safari = Application('safari');
+var chrome = Application('Google Chrome');
+var systemEvents = Application('System Events');
+systemEvents.includeStandardAdditions = true;
+
+const frontmost_app_name = systemEvents.applicationProcesses.where({frontmost: true}).name()[0];
+
+if (frontmost_app_name == 'Safari') {
+  var safari_current_tab_url = safari.windows[0].currentTab.url();
+  addToSafariReadingList(safari_current_tab_url);
+} else if(frontmost_app_name == 'Google Chrome'){
+  var chrome_current_tab_url = chrome.windows[0].activeTab.url();
+  addToSafariReadingList(chrome_current_tab_url);
+}else{
+  //获取剪贴板
+  var clipboardContent = systemEvents.theClipboard();
+  var clipboardContentURL = checkURLOrNot(clipboardContent);
+  //判断剪贴板内容是不是链接
+  if (clipboardContentURL) {
+    addToSafariReadingList(clipboardContentURL);
+  } else {
+    var app = Application.currentApplication();
+    app.includeStandardAdditions = true;
+    app.displayNotification('FAIL',{withTitle: '剪贴板内容不包含链接'});
+  }
+}
+
+function addToSafariReadingList(url) {
+  safari.addReadingListItem(url);
+  var app = Application.currentApplication();
+  app.includeStandardAdditions = true;
+  app.displayNotification('SUCCES',
+  { withTitle: '已添加到阅读列表'});
+}
+
+//判断是否是链接
+function checkURLOrNot(url) {
+  var expression = /[-a-zA-Z0-9@:%_\+.~#?&amp;//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&amp;//=]*)?/gi;
+  var regex = new RegExp(expression);
+  var t = url;
+
+  if (t.match(regex)) {
+    //返回数组中的第一个匹配
+    return t.match(regex)[0];
+  } else {
+    //返回空值
+    return null;
+  }
+}
+</string>
+						<key>TimeOutAbortsMacro</key>
+						<true/>
+						<key>TrimResults</key>
+						<true/>
+						<key>TrimResultsNew</key>
+						<true/>
+						<key>UseText</key>
+						<true/>
+					</dict>
+				</array>
+				<key>CreationDate</key>
+				<real>559749797.33967102</real>
+				<key>ModificationDate</key>
+				<real>577691226.67519295</real>
+				<key>Name</key>
+				<string>添加到阅读列表</string>
+				<key>Triggers</key>
+				<array>
+					<dict>
+						<key>FireType</key>
+						<string>Pressed</string>
+						<key>KeyCode</key>
+						<integer>15</integer>
+						<key>MacroTriggerType</key>
+						<string>HotKey</string>
+						<key>Modifiers</key>
+						<integer>6400</integer>
+					</dict>
+				</array>
+				<key>UID</key>
+				<string>314B50BA-1AAC-4901-AE17-69101E2F28D2</string>
+			</dict>
+		</array>
+		<key>Name</key>
+		<string>实用</string>
+		<key>ToggleMacroUID</key>
+		<string>02A6F0B8-B644-43F3-AA38-C29342FFD115</string>
+		<key>UID</key>
+		<string>8E62DFE3-E57D-4160-9C46-D0BE2ACC7FEC</string>
+	</dict>
+</array>
+</plist>
