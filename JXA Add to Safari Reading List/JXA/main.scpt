@@ -1,3 +1,5 @@
+delay(1);
+
 var safari = Application('safari');
 var chrome = Application('Google Chrome');
 var systemEvents = Application('System Events');
